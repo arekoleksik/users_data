@@ -1,4 +1,13 @@
-var peopleDB = [];
+function personDB() {
+    this.database = [];
+}
+personDB.prototype.addPerson = function (person) {
+    this.database.push(person)
+};
+personDB.prototype.displayPerson = function () {
+    console.log(this.database)
+};
+
 function Person(attributes) {
     this.name = attributes.name;
     this.surname = attributes.surname;
@@ -6,17 +15,30 @@ function Person(attributes) {
     this.role= attributes.role;
 }
 
-function renderRow(name,surname,age,role) {
-    return '<div><div>'+name +'</div><div>'+surname+'</div><div>'+age+'</div><div>'+role+'</div></div>'
+function Render (attribute) {
+    this.container = document.getElementById(attribute)
 }
 
-function renderDB() {
-    var containerDB = document.getElementById('records');
-    containerDB.innerHTML = '';
-    peopleDB.map(function (item) {
-        containerDB.innerHTML += renderRow(item.name, item.surname, item.age, item.role)
-    });
-}
+Render.prototype.setHtml = function (database) {
+    this.container.innerHTML = '';
+    var self = this;
+    database.map(function (item) {
+        self.container.innerHTML += self.renderRow(item.name, item.surname, item.age, item.role)});
+
+};
+
+Render.prototype.renderRow = function (name,surname,age,role) {
+    return '<div><div>'+name +'</div><div>'+surname+'</div><div>'+age+'</div><div>'+role+'</div></div>'
+
+    };
+
+
+
+var renderInstance = new Render('records');
+var dbInstance = new personDB();
+
+
+
 
 var addButton = document.getElementById('addButton');
 addButton.addEventListener('click', function () {
@@ -33,10 +55,9 @@ addButton.addEventListener('click', function () {
         role: inputRole
     });
 
-    peopleDB.push(person1);
-    renderDB();
+    dbInstance.addPerson(person1);
+    renderInstance.setHtml(dbInstance.database)
 });
-
 
 
 
