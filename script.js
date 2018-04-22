@@ -6,39 +6,39 @@ function Person(attributes) {
     this.role= attributes.role;
 }
 
-var person1 = new Person({
-    name: "John",
-    surname: "Snow",
-    age: 25,
-    role: "trainee"
-});
-var person2 = new Person({
-    name: "Maciej",
-    surname: "Snow",
-    age: 25,
-    role: "trainee"
-});
-var person3 = new Person({
-    name: "Kaj",
-    surname: "Snow",
-    age: 25,
-    role: "trainee"
-});
-
-
-peopleDB.push(person1);
-peopleDB.push(person2);
-peopleDB.push(person3);
-
 function renderRow(name,surname,age,role) {
     return '<div><div>'+name +'</div><div>'+surname+'</div><div>'+age+'</div><div>'+role+'</div></div>'
 }
 
 function renderDB() {
     var containerDB = document.getElementById('records');
+    containerDB.innerHTML = '';
     peopleDB.map(function (item) {
         containerDB.innerHTML += renderRow(item.name, item.surname, item.age, item.role)
     });
 }
 
-renderDB();
+var addButton = document.getElementById('addButton');
+addButton.addEventListener('click', function () {
+    var inputName = document.getElementById('inputName').value;
+    var inputSurname = document.getElementById('inputSurname').value;
+    var inputAge = document.getElementById('inputAge').value;
+    var inputRole = document.getElementById('inputRole').value;
+    console.log(inputName+inputSurname+inputAge+inputRole);
+
+    var person1 = new Person({
+        name: inputName,
+        surname: inputSurname,
+        age: inputAge,
+        role: inputRole
+    });
+
+    peopleDB.push(person1);
+    renderDB();
+});
+
+
+
+
+
+
