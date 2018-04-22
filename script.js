@@ -4,6 +4,11 @@ function personDB() {
 personDB.prototype.addPerson = function (person) {
     this.database.push(person)
 };
+personDB.prototype.removePerson = function (removeIndex) {
+    this.database.splice(removeIndex, 1);
+    renderInstance.setHtml(dbInstance.database);
+};
+
 personDB.prototype.displayPerson = function () {
     console.log(this.database)
 };
@@ -27,14 +32,13 @@ function Render (container, button, inputName, inputSurname, inputAge,inputRole)
 Render.prototype.setHtml = function (database) {
     this.container.innerHTML = '';
     var self = this;
-    database.map(function (item) {
-        self.container.innerHTML += self.renderRow(item.name, item.surname, item.age, item.role)});
-
+    database.map(function (item, index) {
+        self.container.innerHTML += self.renderRow(item.name, item.surname, item.age, item.role, index)});
 };
 
-Render.prototype.renderRow = function (name,surname,age,role) {
-    return '<div><div>'+name +'</div><div>'+surname+'</div><div>'+age+'</div><div>'+role+'</div></div>'
+Render.prototype.renderRow = function (name,surname,age,role, index) {
 
+    return '<div><div>'+name +'</div><div>'+surname+'</div><div>'+age+'</div><div>'+role+'</div><button onclick="dbInstance.removePerson('+index+')">Usuń</button></div>'
     };
 
 Render.prototype.getValuesFromInput = function () {
