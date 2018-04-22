@@ -15,8 +15,13 @@ function Person(attributes) {
     this.role= attributes.role;
 }
 
-function Render (attribute) {
-    this.container = document.getElementById(attribute)
+function Render (container, button, inputName, inputSurname, inputAge,inputRole) {
+    this.container = document.getElementById(container);
+    this.button = document.getElementById(button);
+    this.inputName = document.getElementById(inputName);
+    this.inputSurname = document.getElementById(inputSurname);
+    this.inputAge = document.getElementById(inputAge);
+    this.inputRole = document.getElementById(inputRole);
 }
 
 Render.prototype.setHtml = function (database) {
@@ -32,34 +37,26 @@ Render.prototype.renderRow = function (name,surname,age,role) {
 
     };
 
+Render.prototype.getValuesFromInput = function () {
+    return {
+        name: this.inputName.value,
+        surname: this.inputSurname.value,
+        age:this.inputAge.value,
+        role: this.inputRole.value
+    }
+};
 
+Render.prototype.addClick = function () {
+    var self = this;
+    this.button.addEventListener('click', function () {
+        var person = self.getValuesFromInput();
+        dbInstance.addPerson(person);
+        renderInstance.setHtml(dbInstance.database);
+    })
+};
 
-var renderInstance = new Render('records');
+var renderInstance = new Render('records', 'addButton','inputName', 'inputSurname', 'inputAge','inputRole');
 var dbInstance = new personDB();
-
-
-
-
-var addButton = document.getElementById('addButton');
-addButton.addEventListener('click', function () {
-    var inputName = document.getElementById('inputName').value;
-    var inputSurname = document.getElementById('inputSurname').value;
-    var inputAge = document.getElementById('inputAge').value;
-    var inputRole = document.getElementById('inputRole').value;
-    console.log(inputName+inputSurname+inputAge+inputRole);
-
-    var person1 = new Person({
-        name: inputName,
-        surname: inputSurname,
-        age: inputAge,
-        role: inputRole
-    });
-
-    dbInstance.addPerson(person1);
-    renderInstance.setHtml(dbInstance.database)
-});
-
-
-
-
+renderInstance.setHtml(dbInstance.database);
+renderInstance.addClick();
 
